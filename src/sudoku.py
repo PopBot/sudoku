@@ -151,5 +151,30 @@ def generate_sudoku_board_seed_method(size=9):
     :return:
     """
     board = generate_empty_sudoku_board(size)
-    squares = [[i + 1 for i in range(size)] for j in range(size)]
+    squares = [[i + 1 for i in range(size)] for _ in range(size)]
     return squares
+
+
+def gen_possibilities():
+    return [[i + 1 for i in range(9)] for _ in range(3)]
+
+
+def generate_possibility_board(size=9):
+    """
+    Generate a possibility board.
+    """
+    # Rows Cols and Squares
+    # return [[i + 1 for i in range(size)] for _ in range(3)]
+
+    # Generate a 9 x 9 board where each item is gen_possibilities
+    return [[gen_possibilities() for _ in range(size)] for _ in range(9)]
+
+
+def gen_stuff():
+    possibilities = [[i for i in range(9)] for j in range(9)]
+    # print(possibilities)
+    for row in range(9):
+        for col in range(9):
+            possibilities[row][col] = generate_possibility_board(9)
+    return possibilities
+
