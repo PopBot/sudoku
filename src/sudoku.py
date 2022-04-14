@@ -131,9 +131,14 @@ def generate_sudoku_board_iteration_loop(size=9):
     potential_numbers = make_sudoku_column_row_board(size)
     for i in range(size):
         selected_row = random.randint(0, size-1)
+        col_numbers_left = [i + 1 for i in range(size)]
+        row_numbers_left = [i + 1 for i in range(size)]
+        square_numbers_left = [i + 1 for i in range(size)]
         for j in range(size):
             if board[i][j] == 0:
-                board[i][j] = random.choice(potential_numbers[i])
+                possible_numbers = get_possible_numbers(i, j, board, size)
+                chosen_number = random.choice(possible_numbers)
+                board[i][j] = random.choice(possible_numbers)
                 potential_numbers[i].remove(board[i][j])
                 count_iterations += 1
     return board, potential_numbers, count_iterations
