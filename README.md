@@ -16,3 +16,5 @@
 > Solving **Sudoku** has a similar approach to this problem described above. There's an actual valid/efficient way to 
 > generate sudoku boards from 'seeds planted on the board'.
 
+[O^2 is Polynomial Time](https://news.ycombinator.com/item?id=21745862)
+

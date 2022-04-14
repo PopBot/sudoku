@@ -1,4 +1,5 @@
 import math
+import random
 
 
 def generate_empty_sudoku_board(size=9):
@@ -124,17 +125,26 @@ def make_sudoku_column_row_board(size=9):
     return [[i + 1 for i in range(size)] for j in range(size)]
 
 
-def make_sudoku_squares_board(size=9):
-    if not check_if_perfect_square(size):
-        raise Exception("The size of the board must be a perfect square.")
-    size = get_square_root(size)
-
-
 def generate_sudoku_board_iteration_loop(size=9):
+    count_iterations = 0
     board = generate_empty_sudoku_board(size)
+    potential_numbers = make_sudoku_column_row_board(size)
+    for i in range(size):
+        selected_row = random.randint(0, size-1)
+        for j in range(size):
+            if board[i][j] == 0:
+                board[i][j] = random.choice(potential_numbers[i])
+                potential_numbers[i].remove(board[i][j])
+                count_iterations += 1
+    return board, potential_numbers, count_iterations
 
 
 def generate_sudoku_board_seed_method(size=9):
+    """
+    This version attempts to place "seed" numbers on the board and then fill in the rest by checking.
+    :param size:
+    :return:
+    """
     board = generate_empty_sudoku_board(size)
     squares = [[i + 1 for i in range(size)] for j in range(size)]
     return squares
