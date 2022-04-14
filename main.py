@@ -19,6 +19,8 @@ if __name__ == '__main__':
     #
     # print("\n\nTime taken: {}".format(end_time - start_time))
     # print(generate_possibility_board())
+    print(generate_diagonals())
+
     possibilities = generate_possibility_board()
     for row in possibilities:
         for col in row:
@@ -29,3 +31,16 @@ if __name__ == '__main__':
     # for row in stuff:
     #     for col in row:
     #         print(col, end='\n')
+
+    board, leftovers, iterations = generate_sudoku_board()
+    print('===========================================================')
+    print('Sudoku board:')
+    for row in board:
+        print('\n')
+        for col in row:
+            print(col, end='    ')
+
+    print("\n\nRemaining numbers:")
+    print(leftovers)
+    print('\n\nNumber of iterations:', iterations)
+    print('===========================================================')

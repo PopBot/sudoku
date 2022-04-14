@@ -125,37 +125,12 @@ def make_sudoku_column_row_board(size=9):
     return [[i + 1 for i in range(size)] for j in range(size)]
 
 
-def generate_sudoku_board_iteration_loop(size=9):
-    count_iterations = 0
-    board = generate_empty_sudoku_board(size)
-    potential_numbers = make_sudoku_column_row_board(size)
-    for i in range(size):
-        selected_row = random.randint(0, size-1)
-        col_numbers_left = [i + 1 for i in range(size)]
-        row_numbers_left = [i + 1 for i in range(size)]
-        square_numbers_left = [i + 1 for i in range(size)]
-        for j in range(size):
-            if board[i][j] == 0:
-                possible_numbers = get_possible_numbers(i, j, board, size)
-                chosen_number = random.choice(possible_numbers)
-                board[i][j] = random.choice(possible_numbers)
-                potential_numbers[i].remove(board[i][j])
-                count_iterations += 1
-    return board, potential_numbers, count_iterations
-
-
-def generate_sudoku_board_seed_method(size=9):
+def gen_possibilities():
     """
-    This version attempts to place "seed" numbers on the board and then fill in the rest by checking.
-    :param size:
+    Creates 3 x [1, 2, 3, 4, 5, 6, 7, 8, 9] list to track the
+    row, column, and square possibilities.
     :return:
     """
-    board = generate_empty_sudoku_board(size)
-    squares = [[i + 1 for i in range(size)] for _ in range(size)]
-    return squares
-
-
-def gen_possibilities():
     return [[i + 1 for i in range(9)] for _ in range(3)]
 
 
@@ -163,10 +138,10 @@ def generate_possibility_board(size=9):
     """
     Generate a possibility board.
     """
-    # Rows Cols and Squares
-    # return [[i + 1 for i in range(size)] for _ in range(3)]
-
-    # Generate a 9 x 9 board where each item is gen_possibilities
+    # Generate a 9 x 9 board where each item contains 3 lists:
+    #   1. Row values available
+    #   2. Col values available
+    #   3. Square values available
     return [[gen_possibilities() for _ in range(size)] for _ in range(9)]
 
 
@@ -178,3 +153,57 @@ def gen_stuff():
             possibilities[row][col] = generate_possibility_board(9)
     return possibilities
 
+
+def generate_diagonals():
+    return [i + 1 for i in range(9)]
+
+
+def find_possible_number(possibilities, row, col, value):
+    """
+    Find the possible number for the row, column, and square.
+    """
+    for i in range(9):
+        if possibilities[row][col][i][value - 1] == value:
+            return i
+    return None
+
+
+def remove_possible_number(possibilities, row, col, value):
+    """
+    Remove the possible number for the row, column, and square.
+    """
+    for i in range(9):
+        if possibilities[row][col][i][value - 1] == value:
+            possibilities[row][col][i].remove(value)
+            return True
+    return False
+
+
+def search_for_potential_number(arrays):
+    # This function takes in three arrays of [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    # and returns a random value that is in all three arrays.
+    # If there is no value in all three arrays, it returns None.
+    # This function is used to find a potential number for a cell.
+    # It is used in the backtracking algorithm.
+
+    # get a random int between 1 and 9
+    while True:
+        rand_int = random.randint(1, 9)
+        if rand_int in arrays[0] and rand_int in arrays[1] and rand_int in arrays[2]:
+            return rand_int
+
+
+def generate_sudoku_board():
+    count_iterations = 0
+    board = generate_empty_sudoku_board(9)  # Creates a 9 x 9 board
+    possibility_board = generate_possibility_board()
+    for row in range(9):
+        for col in range(9):
+            if board[row][col] == 0:
+                number = search_for_potential_number(possibility_board[row][col])
+                board[row][col] = number
+                # Remove the number for the row possibilities
+                # TODO: Properly remove numbers from possibility_board
+                remove_possible_number(possibility_board, row, col, number)
+                count_iterations += 1
+    return board, possibility_board, count_iterations
