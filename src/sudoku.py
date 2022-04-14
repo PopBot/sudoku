@@ -4,6 +4,17 @@ import math
 def generate_empty_sudoku_board(size=9):
     """
     Generate an empty sudoku board.
+    [
+        [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    ]
     """
     if not check_if_perfect_square(size):
         raise Exception("The size of the board must be a perfect square.")
@@ -95,9 +106,35 @@ def solve_sudoku(board, size=9):
     return False
 
 
+def make_sudoku_column_row_board(size=9):
+    """
+    Generate size by size board
+    [
+        [1, 2, 3, 4, 5, 6, 7, 8, 9],
+        [1, 2, 3, 4, 5, 6, 7, 8, 9],
+        [1, 2, 3, 4, 5, 6, 7, 8, 9],
+        [1, 2, 3, 4, 5, 6, 7, 8, 9],
+        [1, 2, 3, 4, 5, 6, 7, 8, 9],
+        [1, 2, 3, 4, 5, 6, 7, 8, 9],
+        [1, 2, 3, 4, 5, 6, 7, 8, 9],
+        [1, 2, 3, 4, 5, 6, 7, 8, 9],
+        [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    ]
+    """
+    return [[i + 1 for i in range(size)] for j in range(size)]
+
+
+def make_sudoku_squares_board(size=9):
+    if not check_if_perfect_square(size):
+        raise Exception("The size of the board must be a perfect square.")
+    size = get_square_root(size)
+
+
 def generate_sudoku_board_iteration_loop(size=9):
     board = generate_empty_sudoku_board(size)
 
 
 def generate_sudoku_board_seed_method(size=9):
     board = generate_empty_sudoku_board(size)
+    squares = [[i + 1 for i in range(size)] for j in range(size)]
+    return squares
